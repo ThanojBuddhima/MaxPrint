@@ -3,7 +3,7 @@ import { X } from 'lucide-react';
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
-export default function Modal({ isOpen, onClose, title, children }) {
+export default function Modal({ isOpen, onClose, title, children, size = 'md' }) {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -34,7 +34,9 @@ export default function Modal({ isOpen, onClose, title, children }) {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
               transition={{ type: "spring", duration: 0.3 }}
-              className="bg-white rounded-2xl shadow-xl w-full max-w-lg pointer-events-auto overflow-hidden"
+              className={`bg-white shadow-xl pointer-events-auto overflow-hidden flex flex-col
+                ${size === 'full' ? 'fixed inset-0 w-screen h-screen rounded-none max-w-none' : 'w-full max-w-lg rounded-2xl'}
+              `}
             >
               <div className="flex items-center justify-between p-6 border-b border-gray-100">
                 <h3 className="text-xl font-semibold text-gray-900">{title}</h3>
@@ -45,7 +47,7 @@ export default function Modal({ isOpen, onClose, title, children }) {
                   <X size={20} />
                 </button>
               </div>
-              <div className="p-6">
+              <div className={size === 'full' ? 'flex-grow overflow-hidden' : 'p-6'}>
                 {children}
               </div>
             </motion.div>
