@@ -28,15 +28,17 @@ export default function Header() {
   return (
     <motion.header
       className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-        isScrolled ? 'bg-white/80 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-5'
+        'fixed top-0 left-0 right-0 z-50 transition-all duration-300 shadow-lg',
+        isScrolled 
+          ? 'bg-white/95 backdrop-blur-md py-3 text-gray-800 shadow-md' // White when scrolled
+          : 'bg-blue-600 py-4 text-white' // Blue in hero
       )}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
     >
       <div className="container mx-auto px-4 flex items-center justify-between">
-        <Link href="/" className="text-2xl font-bold text-blue-600 tracking-tighter">
+        <Link href="/" className={cn("text-2xl font-bold tracking-tighter transition-colors", isScrolled ? "text-blue-600" : "text-white")}>
           Max Print
         </Link>
         
@@ -46,7 +48,10 @@ export default function Header() {
             <Link
               key={link.name}
               href={link.href}
-              className="text-gray-600 hover:text-blue-600 font-medium transition-colors"
+              className={cn(
+                "font-medium transition-colors hover:opacity-80",
+                isScrolled ? "text-gray-600 hover:text-blue-600" : "text-white/90 hover:text-white"
+              )}
             >
               {link.name}
             </Link>
@@ -54,7 +59,10 @@ export default function Header() {
         </nav>
 
         {/* Actions */}
-          <button className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-700">
+          <button className={cn(
+            "p-2 rounded-full transition-colors",
+            isScrolled ? "hover:bg-gray-100 text-gray-700" : "hover:bg-white/10 text-white"
+          )}>
             <Link href="/contact">
               <User size={20} />
             </Link>
@@ -62,7 +70,7 @@ export default function Header() {
 
         {/* Mobile Menu Button */}
         <button 
-          className="md:hidden p-2 text-gray-700"
+          className={cn("md:hidden p-2", isScrolled ? "text-gray-700" : "text-white")}
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
           {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}

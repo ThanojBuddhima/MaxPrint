@@ -9,13 +9,34 @@ import Button from '@/components/ui/Button';
 
 export default function ServicesPage() {
   const [selectedService, setSelectedService] = useState(null);
-  const [filter, setFilter] = useState('All');
+  const [filters, setFilters] = useState(['All']);
 
   const categories = ['All', ...new Set(servicesData.map(s => s.category))];
   
-  const filteredServices = filter === 'All' 
-    ? servicesData 
-    : servicesData.filter(s => s.category === filter);
+  const toggleFilter = (category) => {
+    if (category === 'All') {
+      setFilters(['All']);
+      return;
+    }
+
+    setFilters(prev => {
+      // If currently 'All', clear it and select the new one
+      let newFilters = prev.includes('All') ? [] : [...prev];
+      
+      if (newFilters.includes(category)) {
+        newFilters = newFilters.filter(c => c !== category);
+      } else {
+        newFilters.push(category);
+      }
+
+      // If nothing selected, revert to 'All'
+      return newFilters.length === 0 ? ['All'] : newFilters;
+    });
+  };
+
+  const filteredServices = filters.includes('All')
+    ? servicesData
+    : servicesData.filter(s => filters.includes(s.category));
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -37,9 +58,9 @@ export default function ServicesPage() {
         {categories.map((cat) => (
           <button
             key={cat}
-            onClick={() => setFilter(cat)}
+            onClick={() => toggleFilter(cat)}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-              filter === cat 
+              filters.includes(cat)
                 ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30' 
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}

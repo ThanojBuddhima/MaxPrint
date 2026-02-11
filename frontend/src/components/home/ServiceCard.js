@@ -3,37 +3,46 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, Info } from 'lucide-react';
 
-export default function ServiceCard({ title, description, icon: Icon, index, onClick }) {
+export default function ServiceCard({ title, description, icon: Icon, image, index, onClick }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.05 }} // Reduced delay for smoother load of many items
+      transition={{ duration: 0.5, delay: index * 0.05 }}
       onClick={onClick}
-      className="group relative p-6 rounded-2xl bg-white border border-gray-100 hover:border-blue-100 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden flex flex-col h-full"
+      className="group relative p-0 rounded-2xl bg-white border border-gray-100 hover:border-blue-100 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden flex flex-col h-full"
     >
-      <div className="absolute top-0 right-0 w-24 h-24 bg-blue-50/50 rounded-bl-full -mr-6 -mt-6 transition-transform group-hover:scale-125 duration-500" />
-      
-      <div className="relative z-10 flex-grow">
-        <div className="mb-4 p-3 bg-blue-50 rounded-xl w-fit group-hover:bg-blue-600 transition-colors duration-300">
-          <Icon className="w-6 h-6 text-blue-600 group-hover:text-white transition-colors duration-300" />
-        </div>
-        
+      {/* Image Section */}
+      <div className="h-48 overflow-hidden relative">
+         <img 
+            src={image || "/images/digital-print.jpg"} 
+            alt={title}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+         />
+         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60" />
+         <div className="absolute bottom-3 left-4 text-white">
+            <div className="p-2 bg-white/20 backdrop-blur-md rounded-lg w-fit">
+               <Icon className="w-5 h-5 text-white" />
+            </div>
+         </div>
+      </div>
+
+      <div className="p-5 flex-grow flex flex-col">
         <h3 className="text-xl font-bold mb-2 text-gray-900 group-hover:text-blue-600 transition-colors">
           {title}
         </h3>
         
         {description && (
-          <p className="text-gray-500 text-sm leading-relaxed mb-4 line-clamp-3">
+          <p className="text-gray-500 text-sm leading-relaxed mb-4 line-clamp-3 flex-grow">
             {description}
           </p>
         )}
-      </div>
-      
-      <div className="mt-auto pt-4 flex items-center text-blue-600 font-medium text-sm group-hover:translate-x-1 transition-transform">
-        <span>View Samples</span>
-        <ArrowRight className="ml-1.5 w-3.5 h-3.5" />
+        
+        <div className="mt-auto pt-2 flex items-center text-blue-600 font-medium text-sm group-hover:translate-x-1 transition-transform">
+          <span>View Samples</span>
+          <ArrowRight className="ml-1.5 w-3.5 h-3.5" />
+        </div>
       </div>
     </motion.div>
   );
