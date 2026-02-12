@@ -40,9 +40,7 @@ export default function ServicesPage() {
 
   return (
     <div className="container mx-auto px-4 py-12">
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
+      <div
         className="text-center mb-12"
       >
         <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900">
@@ -51,7 +49,7 @@ export default function ServicesPage() {
         <p className="text-xl text-gray-500 max-w-2xl mx-auto">
           We offer a comprehensive range of printing and office solutions.
         </p>
-      </motion.div>
+      </div>
       
       {/* Filter Tabs */}
       <div className="flex flex-wrap justify-center gap-2 mb-12">

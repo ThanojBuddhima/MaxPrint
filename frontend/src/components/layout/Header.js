@@ -5,10 +5,13 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { Menu, ShoppingCart, User, X } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const isHome = pathname === '/';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,17 +31,17 @@ export default function Header() {
   return (
     <motion.header
       className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300 shadow-lg',
-        isScrolled 
-          ? 'bg-white/95 backdrop-blur-md py-3 text-gray-800 shadow-md' // White when scrolled
-          : 'bg-blue-600 py-4 text-white' // Blue in hero
+        'fixed top-0 left-0 right-0 z-50 transition-all duration-300 shadow-sm',
+        isScrolled || !isHome
+          ? 'bg-white/95 backdrop-blur-md py-3 text-gray-800' // White when scrolled or not home
+          : 'bg-transparent py-6 text-gray-800' // Transparent on Home (Clean look)
       )}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
     >
       <div className="container mx-auto px-4 flex items-center justify-between">
-        <Link href="/" className={cn("text-2xl font-bold tracking-tighter transition-colors", isScrolled ? "text-blue-600" : "text-white")}>
+        <Link href="/" className={cn("text-2xl font-bold tracking-tighter transition-colors text-blue-600")}>
           Max Print
         </Link>
         
@@ -49,8 +52,7 @@ export default function Header() {
               key={link.name}
               href={link.href}
               className={cn(
-                "font-medium transition-colors hover:opacity-80",
-                isScrolled ? "text-gray-600 hover:text-blue-600" : "text-white/90 hover:text-white"
+                "font-medium transition-colors hover:text-blue-600 text-gray-600"
               )}
             >
               {link.name}
@@ -70,7 +72,7 @@ export default function Header() {
 
         {/* Mobile Menu Button */}
         <button 
-          className={cn("md:hidden p-2", isScrolled ? "text-gray-700" : "text-white")}
+          className={cn("md:hidden p-2 text-gray-700")}
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
           {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}

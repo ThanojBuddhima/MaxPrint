@@ -18,6 +18,15 @@ export default function Home() {
   useEffect(() => {
     // Apply snap styles to html/body
     document.documentElement.style.scrollSnapType = 'y mandatory';
+    document.documentElement.style.height = '100vh';
+    document.documentElement.style.overflowY = 'scroll';
+
+    return () => {
+      // Cleanup styles when leaving the homepage
+      document.documentElement.style.scrollSnapType = '';
+      document.documentElement.style.height = '';
+      document.documentElement.style.overflowY = '';
+    };
     document.documentElement.style.scrollBehavior = 'smooth';
     document.documentElement.style.height = '100%';
     document.body.style.height = '100%';
@@ -94,93 +103,109 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-white">
       
-      {/* Hero Section - Redesigned */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden snap-start snap-always bg-gray-50">
-        
-        {/* Animated Background Image (Behind Text) */}
-        <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
-             <AnimatePresence mode="wait">
-                <motion.div 
-                   key={heroSlides[currentSlide].id}
-                   initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
-                   animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                   exit={{ opacity: 0, scale: 1.1, rotate: 5 }}
-                   transition={{ duration: 0.8, ease: "easeOut" }}
-                   className="absolute w-[80vw] md:w-[60vw] max-w-3xl aspect-square"
-                >
-                   <img 
-                      src={heroSlides[currentSlide].image} 
-                      alt="Hero Background"
-                      className="w-full h-full object-contain opacity-20 md:opacity-25 mix-blend-multiply filter blur-sm md:blur-0" 
-                   />
-                </motion.div>
-             </AnimatePresence>
-        </div>
-
-        <div className="container mx-auto px-4 z-10 text-center">
+      {/* Hero Section - Split Layout (Text Left, Image Right) */}
+      <section className="relative min-h-screen flex items-center bg-gray-50 overflow-hidden snap-start snap-always pt-20">
+        <div className="container mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center h-full">
+          
+          {/* Left Column: Text Content */}
           <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            className="relative"
+            className="z-10 text-left"
           >
-            <div className="inline-flex items-center gap-2 py-2 px-6 rounded-full bg-blue-50 border border-blue-100 text-blue-600 font-medium text-sm mb-8 shadow-sm">
-              <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
-              Premium Printing & Design
+            <div className="inline-flex items-center gap-2 py-2 px-4 rounded-full bg-white border border-gray-200 text-gray-600 font-semibold text-xs tracking-wide uppercase mb-8 shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-orange-500"></span>
+              New Arrival • Pro Performance
             </div>
             
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter mb-6 leading-tight text-gray-900">
-              We are experts in <br />
-              <span className="block mt-2 h-[1.3em] relative">
-                 <AnimatePresence mode="wait">
-                    <motion.div
-                       key={heroSlides[currentSlide].id}
-                       initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
-                       animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                       exit={{ opacity: 0, y: -40, filter: 'blur(10px)' }}
-                       transition={{ duration: 0.6, ease: "easeOut" }}
-                       className="absolute inset-0 w-full text-blue-600"
-                    >
-                       {heroSlides[currentSlide].text}
-                    </motion.div>
-                 </AnimatePresence>
-              </span>
+            <h1 className="text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter mb-4 leading-none text-gray-900">
+               Max Print <br />
+               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+                 Solutions
+               </span>
             </h1>
-            
-            <div className="h-16 mb-12 flex items-center justify-center">
+
+            <div className="h-20 mb-6">
                 <AnimatePresence mode="wait">
-                   <motion.p 
+                   <motion.h2
                       key={heroSlides[currentSlide].id}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      className="text-xl md:text-2xl text-gray-500 max-w-2xl mx-auto leading-relaxed"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      className="text-4xl md:text-5xl font-bold text-gray-800"
                    >
-                     {heroSlides[currentSlide].subtext}
-                   </motion.p>
+                      {heroSlides[currentSlide].text}
+                   </motion.h2>
                 </AnimatePresence>
             </div>
             
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+            <p className="text-xl text-gray-500 mb-10 max-w-lg leading-relaxed">
+               The ultimate printing and design experience. High-quality offset printing, graphic design, and stationery tailored to your business needs.
+            </p>
+            
+            <div className="flex flex-wrap items-center gap-4">
               <Link href="/services">
                 <Button 
                   size="lg" 
-                  className="rounded-full px-12 py-7 text-xl bg-blue-600 hover:bg-blue-700 text-white border-none shadow-xl hover:shadow-2xl hover:scale-105 transition-all"
+                  className="rounded-full px-10 py-7 text-lg bg-gray-900 hover:bg-black text-white shadow-xl hover:scale-105 transition-all"
                 >
-                  Explore Services <ArrowRight className="ml-2 h-6 w-6" />
+                  Explore Services
                 </Button>
               </Link>
               <Link href="/contact">
                  <Button 
-                   variant="outline"
+                   variant="outline" // This variant doesn't seem to exist in the custom button, so we'll style it manually or check Button.js later. Assuming standard shading.
                    size="lg" 
-                   className="rounded-full px-12 py-7 text-xl border-gray-300 text-gray-700 hover:bg-gray-100 transition-all"
+                   className="rounded-full px-10 py-7 text-lg bg-white border border-gray-200 text-gray-900 hover:bg-gray-100 transition-all shadow-sm"
                  >
                    Get a Quote
                  </Button>
               </Link>
             </div>
+
+            {/* Pagination Dots (Optional, if needed for slideshow control) */}
+             <div className="mt-12 flex gap-2">
+                {heroSlides.map((slide, idx) => (
+                  <button 
+                    key={slide.id}
+                    onClick={() => setCurrentSlide(idx)}
+                    className={`w-2 h-2 rounded-full transition-all ${idx === currentSlide ? 'w-8 bg-gray-800' : 'bg-gray-300'}`}
+                  />
+                ))}
+             </div>
           </motion.div>
+
+          {/* Right Column: Hero Image */}
+          <div className="relative h-[60vh] lg:h-[80vh] flex items-center justify-center">
+             
+             <AnimatePresence mode="wait">
+                <motion.div 
+                   key={heroSlides[currentSlide].id}
+                   initial={{ opacity: 0, x: 50, scale: 0.9 }}
+                   animate={{ opacity: 1, x: 0, scale: 1 }}
+                   exit={{ opacity: 0, x: 50, scale: 0.9 }}
+                   transition={{ duration: 0.6, ease: "circOut" }}
+                   className="relative w-full h-full flex items-center justify-center p-8"
+                >
+                   {/* Soft Glow/Blur Background */}
+                   <div className="absolute inset-0 bg-gradient-to-tr from-blue-200/40 to-purple-200/40 rounded-full blur-[100px] scale-75 transform translate-y-10" />
+                   
+                   <img 
+                      src={heroSlides[currentSlide].image} 
+                      alt={heroSlides[currentSlide].text}
+                      className="relative z-10 max-w-full max-h-full object-contain transition-transform duration-500 hover:scale-105" 
+                      style={{ 
+                          filter: "drop-shadow(0 20px 50px rgba(0,0,0,0.15))" // Soft, spread-out shadow
+                      }}
+                   />
+                   
+                   {/* Overlay to soften edges if needed */}
+                   {/* <div className="absolute inset-0 bg-white/10 blur-xl mix-blend-overlay pointer-events-none" /> */}
+                </motion.div>
+             </AnimatePresence>
+          </div>
+
         </div>
       </section>
 

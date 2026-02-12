@@ -5,11 +5,7 @@ import { ArrowRight, Info } from 'lucide-react';
 
 export default function ServiceCard({ title, description, icon: Icon, image, index, onClick }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.05 }}
+    <div
       onClick={onClick}
       className="group relative p-0 rounded-2xl bg-white border border-gray-100 hover:border-blue-100 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden flex flex-col h-full"
     >
@@ -44,6 +40,6 @@ export default function ServiceCard({ title, description, icon: Icon, image, ind
           <ArrowRight className="ml-1.5 w-3.5 h-3.5" />
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
