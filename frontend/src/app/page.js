@@ -20,23 +20,14 @@ export default function Home() {
     document.documentElement.style.scrollSnapType = 'y mandatory';
     document.documentElement.style.height = '100vh';
     document.documentElement.style.overflowY = 'scroll';
+    document.documentElement.style.scrollBehavior = 'auto'; // Force instant scroll
 
     return () => {
       // Cleanup styles when leaving the homepage
       document.documentElement.style.scrollSnapType = '';
       document.documentElement.style.height = '';
       document.documentElement.style.overflowY = '';
-    };
-    document.documentElement.style.scrollBehavior = 'smooth';
-    document.documentElement.style.height = '100%';
-    document.body.style.height = '100%';
-    
-    return () => {
-      // Cleanup styles when leaving homepage
-      document.documentElement.style.scrollSnapType = '';
       document.documentElement.style.scrollBehavior = '';
-      document.documentElement.style.height = '';
-      document.body.style.height = '';
     };
   }, []);
   

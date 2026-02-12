@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { servicesData } from '@/lib/data';
 import ServiceCard from '@/components/home/ServiceCard';
 import ServicePreviewModal from '@/components/home/ServicePreviewModal';
@@ -11,8 +11,13 @@ export default function ServicesPage() {
   const [selectedService, setSelectedService] = useState(null);
   const [filters, setFilters] = useState(['All']);
 
+  // Force scroll to top on mount to prevent "loading from bottom"
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, []);
+
   const categories = ['All', ...new Set(servicesData.map(s => s.category))];
-  
+
   const toggleFilter = (category) => {
     if (category === 'All') {
       setFilters(['All']);
